@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تواصل الدكتور أحمد النبوي والمطور محمد إبراهيم</title>
+
+  <!-- ✅ SEO -->
+  <meta name="description" content="تواصل مع الدكتور أحمد النبوي، المعيد بجامعة الأزهر ومدرس اللغة العربية للمرحلة الثانوية، والمطور محمد إبراهيم مصمم هذا الموقع.">
+  <meta name="keywords" content="الدكتور أحمد النبوي, جامعة الأزهر, مدرس لغة عربية, النبوي, محمد إبراهيم, مطور ويب, تواصل, فيسبوك, يوتيوب, واتساب">
+  <meta name="author" content="محمد إبراهيم">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://elnabawy.com/contact">
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:title" content="تواصل الدكتور أحمد النبوي والمطور محمد إبراهيم">
+  <meta property="og:description" content="صفحة التواصل الرسمية مع الدكتور أحمد النبوي والمطور محمد إبراهيم.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://elnabawy.com/contact">
+  <meta property="og:image" content="https://elnabawy.com/images/cover.jpg">
+  <meta property="og:locale" content="ar_AR">
+
+  <!-- ✅ Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="تواصل الدكتور أحمد النبوي والمطور محمد إبراهيم">
+  <meta name="twitter:description" content="تواصل معنا عبر وسائل التواصل الاجتماعي.">
+  <meta name="twitter:image" content="https://elnabawy.com/images/cover.jpg">
+
+  <!-- ✅ Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- ✅ Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "د. أحمد النبوي",
+        "jobTitle": "المعيد بجامعة الأزهر ومدرس اللغة العربية",
+        "url": "https://elnabawy.com",
+        "image": "https://elnabawy.com/images/profile-placeholder.png",
+        "sameAs": [
+          "https://youtube.com/@elnabawey1",
+          "https://www.facebook.com/drahmed.elmahlawy.543",
+          "https://wa.me/+201019282432",
+          "tel:+201019282432"
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "محمد إبراهيم",
+        "jobTitle": "مطور ويب ومصمم واجهات المستخدم",
+        "url": "https://elnabawy.com",
+        "image": "https://elnabawy.com/images/dev-avatar.png",
+        "sameAs": [
+          "https://github.com/Mohamed224466",
+          "https://www.facebook.com/mohamed.ibrahim.gamal.2025/?locale=ar_AR",
+          "https://www.instagram.com/",
+          "https://wa.me/+201022644663",
+          "tel:+201022644663"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ✅ خطوط وأيقونات -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- ✅ CSS -->
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Cairo", sans-serif; }
+    body {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container {
+      display:flex;
+      flex-wrap:wrap;
+      gap:30px;
+      justify-content:center;
+    }
+    .card {
+      background:#fff;
+      width:340px;
+      border-radius:20px;
+      box-shadow:0 15px 40px rgba(0,0,0,0.15);
+      overflow:hidden;
+      text-align:center;
+      position:relative;
+      transform-style:preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: fadeInUp 1s ease forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(40px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    .card:hover {
+      transform: rotateY(5deg) translateY(-8px);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.2);
+    }
+    .header-bg {
+      height:120px;
+      position:relative;
+      overflow:hidden;
+      background: linear-gradient(135deg, #006a3b, #4caf50);
+    }
+    .header-bg::before {
+      content:"";
+      position:absolute;
+      top:-60px; left:-60px;
+      width:200%; height:200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
+      animation: rotateLight 8s linear infinite;
+    }
+    @keyframes rotateLight {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .profile-pic {
+      width:120px; height:120px;
+      border-radius:50%;
+      border:4px solid #fff;
+      background:#ddd center/cover no-repeat;
+      position:absolute;
+      top:65px;
+      left:50%;
+      transform:translateX(-50%);
+      box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    }
+    .card-content {
+      padding:100px 20px 30px;
+    }
+    .card-content h2 {
+      font-size:1.7rem;
+      color:#006a3b;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .card-content h3 {
+      font-size:1.05rem;
+      color:#555;
+      font-weight:600;
+      margin-bottom:15px;
+    }
+    .card-content p {
+      color:#333;
+      font-size:1rem;
+      line-height:1.7;
+      margin-bottom:25px;
+    }
+    .social-links {
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      margin-bottom:15px;
+    }
+    .social-links a {
+      color:#fff;
+      font-size:1.4rem;
+      width:45px;
+      height:45px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    .social-links a:hover {
+      transform: scale(1.2) rotate(10deg);
+      filter: brightness(1.2);
+    }
+    .youtube { background:#FF0000; }
+    .facebook { background:#1877F2; }
+    .whatsapp { background:#25D366; }
+    .phone { background:#2e7d32; }
+    .github { background:#333; }
+    .instagram { background:#C13584; }
+
+    @media (max-width:450px) {
+      .card { width:90%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- 🧑‍🏫 كارت الدكتور -->
+    <div class="card ahmed">
+      <div class="header-bg"></div>
+      <div class="profile-pic" style="background-image:url('images/profile-placeholder.png')"></div>
+      <div class="card-content">
+        <h2>د. أحمد النبوي</h2>
+        <h3>المعيد بجامعة الأزهر</h3>
+        <p>مدرس اللغة العربية للمرحلة الثانوية ومعيد بقسم اللغة العربية بجامعة الأزهر الشريف.</p>
+        <div class="social-links">
+          <a href="https://youtube.com/@elnabawey1?si=BQsReSMzyT1XkIpq" class="youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/drahmed.elmahlawy.543" class="facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/201019282432" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="tel:+201019282432" class="phone"><i class="fas fa-phone-alt"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 💻 كارت المطور -->
+    <div class="card developer">
+      <div class="header-bg" style="background: linear-gradient(135deg, #002b5b, #007bff)"></div>
+      <div class="profile-pic" style="background-image:url('images/dev-avatar.png')"></div>
+      <div class="card-content">
+        <h2>م. محمد إبراهيم</h2>
+        <h3>مطور الموقع</h3>
+        <p>مطور واجهات ويب يهتم بالتفاصيل الجمالية ويُحسّن تجربة المستخدم بإبداع واحترافية.</p>
+        <div class="social-links">
+          <a href="https://github.com/Mohamed224466" class="github" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/mohamed.ibrahim.gamal.2025/?locale=ar_AR" class="facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/201022644663" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="tel:+201022644663" class="phone"><i class="fas fa-phone-alt"></i></a>
+          <a href="https://www.instagram.com/" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

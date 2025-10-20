@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>زر دعم المنصة</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+  .draggable-btn {
+  position: absolute;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  background: #25D366;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transform: scale(1); /* حجم طبيعي */
+  opacity: 0; /* مخفي عند الإدراج */
+  touch-action: none;
+  min-width: 90px;
+  text-decoration: none;
+  z-index: 9999;
+  transition: transform 0.12s ease, opacity 0.1s ease;
+}
+
+.draggable-btn i { font-size: 28px; }
+.draggable-btn span { font-size: 14px; }
+
+.draggable-btn.dragging {
+  cursor: grabbing;
+  transform: scale(0.96);
+}
+
+/* Media Queries للشاشات الصغيرة (الموبايل) */
+@media (max-width: 480px) {
+  .draggable-btn {
+    min-width: 60px;
+    padding: 12px 14px;
+    gap: 4px;
+  }
+
+  .draggable-btn i {
+    font-size: 22px;
+  }
+
+  .draggable-btn span {
+    font-size: 12px;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- زر دعم المنصة -->
+      <a id="btn" class="draggable-btn"
+       href="https://wa.me/201551213268?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D9%85%D8%AD%D8%AA%D8%A7%D8%AC%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9"
+       target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>دعم المنصة</span>
+      </a>
+        <!-- نهاية زر دعم المنصة -->
+
+ 
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- 🔍 SEO META TAGS -->
+<meta name="description" content="شاهد فيديوهات شرح مادة اللغة العربية للمرحلة الثانوية بإشراف الدكتور أحمد النبوي - معيد بجامعة الأزهر. شروحات مبسطة ومنهج منظم لطلاب أولى وتانية وثالثة ثانوي.">
+<meta name="keywords" content="فيديوهات لغة عربية, شرح اللغة العربية, دروس النبوي, شرح أولى ثانوي, شرح تانية ثانوي, شرح ثالثة ثانوي, النبوي, دكتور أحمد النبوي, elnabawy.com, دروس اللغة العربية, تعليم اللغة العربية للثانوي">
+<meta name="author" content="Mohamed Ibrahim">
+<meta name="robots" content="index, follow">
+
+<!-- 🧭 Open Graph for Facebook & WhatsApp -->
+<meta property="og:title" content="فيديوهات شرح اللغة العربية للثانوي | موقع النبوي">
+<meta property="og:description" content="شاهد أقوى دروس وشروحات اللغة العربية للثانوية العامة بإشراف الدكتور أحمد النبوي.">
+<meta property="og:image" content="https://elnabawy.com/images/videos-preview.jpg">
+<meta property="og:url" content="https://elnabawy.com/videos.html">
+<meta property="og:type" content="video.other">
+<meta property="og:locale" content="ar_AR">
+
+<!-- 🐦 Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="فيديوهات اللغة العربية للثانوي | النبوي">
+<meta name="twitter:description" content="شاهد دروس اللغة العربية للثانوية العامة بإشراف الدكتور أحمد النبوي على موقع النبوي.">
+<meta name="twitter:image" content="https://elnabawy.com/images/videos-preview.jpg">
+<meta name="twitter:creator" content="@elnabawey">
+
+<!-- 🌐 Canonical Link -->
+<link rel="canonical" href="https://elnabawy.com/videos.html">
+
+<!-- 📱 Mobile Optimization -->
+<meta name="theme-color" content="#2e7d32">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 📺 Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGallery",
+  "name": "فيديوهات شرح اللغة العربية للمرحلة الثانوية",
+  "url": "https://elnabawy.com/videos.html",
+  "description": "مجموعة من فيديوهات شرح منهج اللغة العربية للثانوي بإشراف الدكتور أحمد النبوي.",
+  "image": "https://elnabawy.com/images/videos-preview.jpg",
+  "creator": {
+    "@type": "Person",
+    "name": "دكتور أحمد النبوي",
+    "jobTitle": "معيد بجامعة الأزهر"
+  },
+  "inLanguage": "ar",
+  "about": "دروس وشروحات مادة اللغة العربية للمرحلة الثانوية."
+}
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فيديوهات اللغة العربية - النبوي</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:"Cairo", sans-serif; }
+  body { background:#f0f4f3; color:#222; display:flex; flex-direction:column; min-height:100vh; }
+
+  header {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color: #fff;
+    text-align:center;
+    overflow:hidden;
+  }
+
+  header .header-bg {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-size:cover;
+    background-position:center;
+    filter:blur(3px);
+    z-index:0;
+    opacity:0;
+    transition: opacity 0.7s ease-in-out, background-image 0.5s ease-in-out;
+  }
+
+  header::after {
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(46,125,50,0.25);
+    z-index:1;
+  }
+
+  header h1, header p {
+    position:relative;
+    z-index:2;
+    text-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  header h1 { font-size:2.5rem; font-weight:800; letter-spacing:1px; }
+  header p { font-size:1.2rem; margin-top:8px; font-weight:500; }
+
+  .year-buttons {
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin:20px 0;
+    flex-wrap:wrap;
+    transition: opacity 0.4s ease;
+  }
+
+  .year-buttons button {
+    padding:12px 25px;
+    border:none;
+    border-radius:12px;
+    background: #2e7d32;
+    color:white;
+    font-weight:bold;
+    font-size:1rem;
+    cursor:pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .year-buttons button:hover {
+    background:#1b4d20;
+    transform: translateY(-2px);
+  }
+
+  main.video-container {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+  }
+
+  .video-wrapper {
+    width: 70vw; /* 70% من عرض الشاشة */
+    height: auto;
+    border-radius:15px;
+    overflow:hidden;
+    margin-bottom:25px;
+  }
+
+  .video-wrapper iframe {
+    width: 100%;
+    height: calc(70vw * 9 / 16); /* نسبة 16:9 */
+    border:none;
+  }
+
+  .video-description {
+    max-width:900px;
+    text-align:center;
+    font-size:1.1rem;
+    color:#333;
+  }
+
+  .coming-soon {
+    font-size:1.3rem;
+    color:#2e7d32;
+    font-weight:bold;
+    text-align:center;
+    margin-top:50px;
+  }
+
+  footer {
+    background:#2e7d32;
+    color:white;
+    text-align:center;
+    padding:15px;
+    font-size:0.95rem;
+    letter-spacing:0.5px;
+  }
+
+  @media(max-width:900px){
+    .video-wrapper { width: 90vw; }
+    .video-wrapper iframe { height: calc(90vw * 9 / 16); }
+  }
+
+  @media(max-width:600px){
+    header h1 { font-size:2rem; }
+    header p { font-size:1rem; }
+    .year-buttons button { padding:10px 20px; font-size:0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-bg"></div>
+  <h1>النبوي - فيديوهات اللغة العربية</h1>
+  <p>اختر السنة لمشاهدة الفيديو</p>
+</header>
+
+<div class="year-buttons">
+  <button data-year="first">أول ثانوي</button>
+  <button data-year="second">ثاني ثانوي</button>
+  <button data-year="third">ثالث ثانوي</button>
+</div>
+
+<main class="video-container">
+  <div id="videoContent">
+    <p class="coming-soon">اختر السنة لمشاهدة الفيديو</p>
+  </div>
+</main>
+
+<footer>© 2025 Mohamed Ibrahim - جميع الحقوق محفوظة</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const headerBg = document.querySelector(".header-bg");
+    const headerImages = [
+      "images/header1.jpg",
+      "images/header2.jpg",
+      "images/header3.jpg"
+    ];
+    let index = 0;
+
+    function changeHeaderImage() {
+      headerBg.style.opacity = 0;
+      setTimeout(() => {
+        headerBg.style.backgroundImage = `url('${headerImages[index]}')`;
+        headerBg.style.opacity = 1;
+        index = (index + 1) % headerImages.length;
+      }, 700);
+    }
+
+    changeHeaderImage();
+    setInterval(changeHeaderImage, 5000);
+
+    // تخزين الفيديوهات حسب السنة الدراسية
+    let videos = {
+      first: [],
+      second: [],
+      third: []
+    };
+
+    // جلب الفيديوهات من الباك إند
+    async function fetchVideos() {
+      try {
+        const response = await fetch('http://localhost:5000/api/videos/list');
+        const result = await response.json();
+        if (!result.success || !Array.isArray(result.videos)) return;
+        // تصنيف الفيديوهات حسب الصف الدراسي (grade)
+        result.videos.forEach(video => {
+          const videoObj = {
+            id: video.url,
+            desc: video.description || video.title
+          };
+          if (video.grade === 'الأول الثانوي') videos.first.push(videoObj);
+          else if (video.grade === 'الثاني الثانوي') videos.second.push(videoObj);
+          else if (video.grade === 'الثالث الثانوي') videos.third.push(videoObj);
+        });
+      } catch (error) {
+        console.error('خطأ في جلب الفيديوهات:', error);
+      }
+    }
+
+    // جلب الفيديوهات عند تحميل الصفحة
+    fetchVideos();
+
+    const videoContent = document.getElementById('videoContent');
+    const buttons = document.querySelectorAll('.year-buttons button');
+    const yearButtonsContainer = document.querySelector('.year-buttons');
+    const headerText = document.querySelector("header p");
+
+    function showVideos(year){
+      videoContent.innerHTML = '';
+      if(videos[year] && videos[year].length > 0){
+        videos[year].forEach(v => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'video-wrapper';
+          wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen></iframe>
+                               <p class="video-description">${v.desc}</p>`;
+          videoContent.appendChild(wrapper);
+        });
+      } else {
+        videoContent.innerHTML = `<p class="coming-soon">سيتم إضافة فيديوهات ${year === 'first' ? 'أول ثانوي' : year === 'second' ? 'ثاني ثانوي' : 'ثالث ثانوي'} قريباً</p>`;
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const yearName = btn.textContent;
+        const yearKey = btn.dataset.year;
+
+        yearButtonsContainer.style.display = 'none';
+        headerText.textContent = `فيديوهات ${yearName}`;
+        showVideos(yearKey);
+        history.pushState({year: yearKey}, '');
+      });
+    });
+
+    window.addEventListener('popstate', () => {
+      yearButtonsContainer.style.display = 'flex';
+      videoContent.innerHTML = `<p class="coming-soon">اختر السنة لمشاهدة الفيديو</p>`;
+      headerText.textContent = 'اختر السنة لمشاهدة الفيديو';
+    });
+  });
+
+  // ===== كيفية إضافة فيديو =====
+  /*
+    videos.first.push({ id:"YOUTUBE_ID", desc:"عنوان الفيديو" });
+    videos.second.push({ id:"YOUTUBE_ID", desc:"عنوان الفيديو" });
+    videos.third.push({ id:"YOUTUBE_ID", desc:"عنوان الفيديو" });
+  */
+</script>
+
+  <script src="button.js" defer></script>
+</body>
+</html>
