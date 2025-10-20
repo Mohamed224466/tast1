@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إضافة طالب جديد</title>
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body dir="rtl">
+  <header>
+    <h2>تسجيل طالب جديد</h2>
+    <button onclick="goBack()">رجوع</button>
+  </header>
+
+  <form id="studentForm">
+    <label>اسم الطالب:</label>
+    <input type="text" id="name" required>
+
+    <label>الصف:</label>
+    <select id="class" required>
+      <option value="ثالثة إعدادي">ثالثة إعدادي</option>
+      <option value="أولى ثانوي">أولى ثانوي</option>
+      <option value="ثانية ثانوي">ثانية ثانوي</option>
+      <option value="ثالثة ثانوي">ثالثة ثانوي</option>
+    </select>
+
+    <label>رقم الطالب:</label>
+    <input type="text" id="phone" required>
+
+    <label>رقم ولي الأمر:</label>
+    <input type="text" id="parent_phone" required>
+
+    <button type="submit">إضافة الطالب</button>
+    <p id="message"></p>
+  </form>
+
+  <script>
+    async function addStudent(e) {
+      e.preventDefault();
+      const data = {
+        name: name.value,
+        class: document.getElementById('class').value,
+        phone: phone.value,
+        parent_phone: parent_phone.value
+      };
+      const res = await fetch('/api/admin/add-student', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      document.getElementById('message').textContent = result.message || 'تم التسجيل بنجاح';
+    }
+
+    function goBack() {
+      window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('studentForm').addEventListener('submit', addStudent);
+  </script>
+</body>
+</html>

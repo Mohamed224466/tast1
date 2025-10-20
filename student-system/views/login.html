@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل الدخول - النظام</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: linear-gradient(135deg, #007bff, #6f42c1);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 360px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, select {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      text-align: center;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>تسجيل الدخول</h1>
+    <form id="loginForm">
+      <label>اسم المستخدم</label>
+      <input type="text" id="username" required placeholder="أدخل اسم المستخدم" />
+
+      <label>كلمة المرور</label>
+      <input type="password" id="password" required placeholder="أدخل كلمة المرور" />
+
+      <label>الدور</label>
+      <select id="role" required>
+        <option value="">اختر الدور</option>
+        <option value="developer">مطوّر</option>
+        <option value="admin">أدمن</option>
+      </select>
+
+      <button type="submit">دخول</button>
+      <div id="errorMsg" class="error"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!role) {
+        errorMsg.textContent = "⚠️ يرجى اختيار الدور أولاً.";
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password, role }),
+        });
+
+        const data = await res.json();
+
+        if (data.success && data.role === role) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("role", data.role);
+
+          // ✅ التوجيه حسب الدور
+          if (data.role === "developer") {
+            window.location.href = "dashboard.html";
+          } else if (data.role === "admin") {
+            window.location.href = "admin-panel.html";
+          }
+        } else {
+          errorMsg.textContent = "❌ اسم المستخدم أو كلمة المرور أو الدور غير صحيحة.";
+        }
+      } catch (err) {
+        console.error(err);
+        errorMsg.textContent = "⚠️ حدث خطأ أثناء تسجيل الدخول.";
+      }
+    });
+  </script>
+</body>
+</html>

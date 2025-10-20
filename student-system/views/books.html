@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدارة الكتب</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    input[type="file"] {
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .download-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    img {
+      width: 50px;
+      height: 60px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📚 إدارة الكتب</h2>
+
+  <div class="form-container">
+    <label>اسم الكتاب</label>
+    <input type="text" id="title" placeholder="اكتب اسم الكتاب">
+
+    <label>الوصف</label>
+    <textarea id="description" placeholder="اكتب وصفًا قصيرًا عن الكتاب"></textarea>
+
+    <label>غلاف الكتاب</label>
+    <input type="file" id="cover" accept="image/*">
+
+    <label>ملف الكتاب (PDF)</label>
+    <input type="file" id="pdf" accept="application/pdf">
+
+    <button onclick="uploadBook()">📤 إضافة الكتاب</button>
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الغلاف</th>
+        <th>الاسم</th>
+        <th>الوصف</th>
+        <th>تحميل</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody id="bookTable"></tbody>
+  </table>
+
+  <script>
+    async function loadBooks() {
+      const res = await fetch("/api/books");
+      const books = await res.json();
+      const table = document.getElementById("bookTable");
+      table.innerHTML = "";
+
+      books.forEach((b) => {
+        const row = `
+          <tr>
+            <td><img src="${b.cover}" alt="غلاف"></td>
+            <td>${b.title}</td>
+            <td>${b.description}</td>
+            <td><a href="${b.pdf}" target="_blank"><button class="download-btn">📥 تحميل</button></a></td>
+            <td><button class="delete-btn" onclick="deleteBook(${b.id})">🗑️ حذف</button></td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
+    }
+
+    async function uploadBook() {
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const cover = document.getElementById("cover").files[0];
+      const pdf = document.getElementById("pdf").files[0];
+      const msg = document.getElementById("msg");
+
+      if (!title || !description || !cover || !pdf) {
+        msg.textContent = "⚠️ من فضلك املأ كل الحقول";
+        msg.style.color = "red";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("cover", cover);
+      formData.append("pdf", pdf);
+
+      const res = await fetch("/api/books/add", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = data.success ? "green" : "red";
+      loadBooks();
+    }
+
+    async function deleteBook(id) {
+      if (!confirm("هل أنت متأكد من حذف هذا الكتاب؟")) return;
+      await fetch(`/api/books/${id}`, { method: "DELETE" });
+      loadBooks();
+    }
+
+    loadBooks();
+  </script>
+</body>
+</html>

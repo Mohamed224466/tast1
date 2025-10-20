@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>لوحة الأدمن</title>
+<style>
+:root{
+  --primary:#28a745;
+  --primary-dark:#1e7e34;
+  --danger:#dc3545;
+  --danger-dark:#a71d2a;
+  --bg:#f3f4f6;
+  --card-bg:#fff;
+}
+body {
+  font-family: "Cairo", sans-serif;
+  margin: 0;
+  background-color: var(--bg);
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), #20c997);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}
+
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  height: calc(100vh - 60px);
+}
+
+.sidebar {
+  background: var(--card-bg);
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.sidebar h3 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.sidebar button:hover {
+  background: var(--primary-dark);
+}
+
+.logout {
+  background: var(--danger) !important;
+}
+
+.logout:hover {
+  background: var(--danger-dark) !important;
+}
+
+.content {
+  padding: 25px;
+  overflow-y: auto;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  background: var(--card-bg);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    right: -250px;
+    width: 220px;
+    height: calc(100vh - 60px);
+    border-left: none;
+    border-right: 3px solid var(--primary);
+    z-index: 1000;
+    transition: right 0.3s;
+    overflow-y: auto;
+  }
+
+  .sidebar.show {
+    right: 0;
+  }
+
+  .content {
+    padding: 10px;
+    height: calc(100vh - 60px);
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  لوحة الأدمن
+  <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+</header>
+
+<div class="container">
+  <div class="sidebar" id="sidebar">
+    <h3>القائمة</h3>
+    <button onclick="openPage('students.html'); toggleMenu()">الطلاب</button>
+      <button onclick="openStudentDetails()">عرض تفاصيل الطلاب</button>
+    <button onclick="openPage('books.html'); toggleMenu()">الكتب</button>
+    <button onclick="openPage('videos.html'); toggleMenu()">الفيديوهات</button>
+    <button class="logout" onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <div class="content">
+    <iframe id="frame" src="students.html"></iframe>
+  </div>
+</div>
+
+<script>
+function openPage(page) {
+  document.getElementById("frame").src = page;
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("show");
+}
+
+function openStudentDetails() {
+  window.open('student-details.html', '_blank');
+}
+
+// تحقق من تسجيل الدخول
+const role = localStorage.getItem("role");
+if (!role || role !== "admin") {
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

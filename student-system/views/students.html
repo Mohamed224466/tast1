@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدارة الطلاب</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: #f6f8fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: black;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>👩‍🎓 إدارة الطلاب</h2>
+
+  <div class="form-container">
+    <label>اسم الطالب</label>
+    <input type="text" id="name" placeholder="أدخل اسم الطالب">
+
+    <label>رقم الهاتف</label>
+    <input type="text" id="phone" placeholder="أدخل رقم الهاتف">
+
+    <label>رقم ولي الأمر</label>
+    <input type="text" id="parentPhone" placeholder="أدخل رقم ولي الأمر">
+
+    <label>الصف الدراسي</label>
+    <select id="grade">
+      <option value="">اختر الصف</option>
+      <option value="الأول الثانوي">الأول الثانوي</option>
+      <option value="الثاني الثانوي">الثاني الثانوي</option>
+      <option value="الثالث الثانوي">الثالث الثانوي</option>
+    </select>
+
+    <button onclick="addStudent()">➕ إضافة الطالب</button>
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>الهاتف</th>
+        <th>هاتف ولي الأمر</th>
+        <th>الصف</th>
+        <th>الكود</th>
+        <th>تعديل</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody id="studentTable"></tbody>
+  </table>
+
+  <script>
+    async function loadStudents() {
+      const res = await fetch("/api/students/list");
+      const data = await res.json();
+      const students = data.success ? data.students : [];
+      const table = document.getElementById("studentTable");
+      table.innerHTML = "";
+
+      students.forEach((s) => {
+        table.innerHTML += `
+          <tr>
+            <td>${s.name}</td>
+            <td>${s.phone}</td>
+            <td>${s.parent_phone}</td>
+            <td>${s.grade}</td>
+            <td>${s.code}</td>
+            <td><button class="edit-btn" onclick="editStudent(${s.id})">✏️</button></td>
+            <td><button class="delete-btn" onclick="deleteStudent(${s.id})">🗑️</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    async function addStudent() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const parentPhone = document.getElementById("parentPhone").value.trim();
+      const grade = document.getElementById("grade").value;
+      const msg = document.getElementById("msg");
+
+      if (!name || !phone || !parentPhone || !grade) {
+        msg.textContent = "⚠️ يرجى ملء جميع الحقول.";
+        msg.style.color = "red";
+        return;
+      }
+
+      const res = await fetch("/api/students/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, parent_phone: parentPhone, grade })
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = data.message.includes("تم") ? "green" : "red";
+      loadStudents();
+    }
+
+    async function deleteStudent(id) {
+      if (!confirm("هل أنت متأكد من حذف هذا الطالب؟")) return;
+      await fetch(`/api/students/delete/${id}`, { method: "DELETE" });
+      loadStudents();
+    }
+
+    async function editStudent(id) {
+      const newName = prompt("أدخل الاسم الجديد:");
+      if (!newName) return;
+      await fetch(`/api/students/update/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName })
+      });
+      loadStudents();
+    }
+
+    loadStudents();
+  </script>
+</body>
+</html>

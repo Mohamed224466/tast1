@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المطور</title>
+  <script>
+    // تأكد أن المستخدم مسجل بدور المطور فقط لعرض لوحة المطور
+    (function(){
+      try {
+        const role = localStorage.getItem('role');
+        if (!role || role !== 'developer') {
+          // ليس مطوراً -> أعِد التوجيه لصفحة تسجيل الدخول
+          window.location.href = 'login.html';
+        }
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
+  <!-- External JS modules (deferred). Load helpers first (main.js) so shared helpers exist -->
+  <script src="/js/main.js" defer></script>
+  <script src="/js/admin.js" defer></script>
+  <script src="/js/students.js" defer></script>
+  <script src="/js/books.js" defer></script>
+  <script src="/js/videos.js" defer></script>
+  <style>
+    :root {
+      --primary: #28a745;
+      --primary-dark: #1e7e34;
+      --danger: #dc3545;
+      --danger-dark: #a71d2a;
+      --bg: #f3f4f6;
+      --card-bg: #fff;
+      --text-color: #222;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{font-family:"Cairo",sans-serif; background:var(--bg); color:var(--text-color);}
+    header{background:linear-gradient(135deg,var(--primary),#20c997); color:white; padding:15px; text-align:center; font-size:24px; font-weight:bold;}
+    .container{display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 60px);}
+    .sidebar{background:var(--card-bg); border-left:3px solid var(--primary); box-shadow:0 0 10px rgba(0,0,0,0.1); padding:20px;}
+    .sidebar h3{text-align:center; margin-bottom:20px; color:var(--text-color);}
+    .sidebar button{display:block; width:100%; padding:12px; margin-bottom:10px; border:none; background:var(--primary); color:white; border-radius:8px; cursor:pointer; transition:0.3s;}
+    .sidebar button:hover{background:var(--primary-dark);}
+    .sidebar .logout{background:var(--danger) !important;}
+    .sidebar .logout:hover{background:var(--danger-dark) !important;}
+    .content{padding:25px; overflow-y:auto;}
+    .card{background:var(--card-bg); padding:15px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px;}
+    .form-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;}
+    .form-row > *{flex:1 1 180px;}
+    input, select, textarea{width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size:14px; color:#222; background:#fff;}
+    button{padding:10px 14px; border-radius:8px; border:0; background:var(--primary); color:white; cursor:pointer;}
+    button.secondary{background:#6c757d;}
+    table{width:100%; border-collapse:collapse;}
+    th,td{text-align:center; padding:8px; border-bottom:1px solid #eee;}
+    th{background:#f1f3f5;}
+    .small-btn{padding:6px 8px; border-radius:6px; border:0; cursor:pointer;}
+    .edit{background:#ffc107; color:#000;}
+    .del{background:var(--danger);}
+    .success{color:green; font-weight:bold;}
+    .error{color:var(--danger); font-weight:bold;}
+    .muted{color:#6c757d;}
+    img.thumb{width:60px; height:70px; object-fit:cover; border-radius:6px;}
+    .panel{display:none;}
+    .panel.active{display:block;}
+    @media(max-width:992px){ .container{grid-template-columns:180px 1fr;} .form-row{flex-direction:column;} th,td{font-size:13px;padding:6px;} img.thumb{width:48px;height:56px;} }
+    @media(max-width:720px){ .container{grid-template-columns:1fr;} .sidebar{display:flex; overflow-x:auto; gap:10px; border-left:none; border-bottom:3px solid var(--primary);} .sidebar h3{display:none;} .sidebar button{flex:1 0 auto;} .form-row{flex-direction:column;} th,td{font-size:12px;padding:4px;} img.thumb{width:40px;height:48px;} }
+  </style>
+</head>
+<body>
+  <header>لوحة المطور</header>
+
+  <div class="container">
+    <div class="sidebar">
+      <h3>القائمة</h3>
+      <button data-tab="admins" class="active">الأدمنز</button>
+        <button data-tab="developer">المطور</button>
+      <button data-tab="students">الطلاب</button>
+      <button data-tab="books">الكتب</button>
+      <button data-tab="videos">الفيديوهات</button>
+      <button class="logout" onclick="logout()">تسجيل الخروج</button>
+    </div>
+
+    <div class="content">
+      <!-- Admins -->
+      <div id="admins" class="panel active card">
+        <h3>🧑‍💼 إدارة الأدمنز</h3>
+        <div class="form-row">
+          <input id="newAdminUser" placeholder="اسم المستخدم">
+          <input id="newAdminPass" type="password" placeholder="كلمة المرور">
+          <button id="addAdminBtn">➕ إضافة أدمن</button>
+          <button id="openStudentDetailsFromAdmin" class="secondary">عرض تفاصيل الطالب</button>
+        </div>
+        <p id="adminMsg" class="muted"></p>
+        <table id="adminsTable">
+          <thead><tr><th>المعرف</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>إجراءات</th></tr></thead>
+          <tbody><tr><td colspan="4" class="muted">جارٍ التحميل...</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- Students -->
+      <div id="students" class="panel card">
+        <h3>👩‍🎓 إدارة الطلاب</h3>
+        <div class="form-row">
+          <input id="stu_name" placeholder="اسم الطالب">
+          <input id="stu_phone" placeholder="هاتف الطالب">
+          <input id="stu_parent" placeholder="هاتف ولي الأمر">
+          <select id="stu_grade">
+            <option value="">اختر الصف</option>
+            <option>ثالثة إعدادي</option>
+            <option>أولى ثانوي</option>
+            <option>ثانية ثانوي</option>
+            <option>ثالثة ثانوي</option>
+          </select>
+          <button id="addStudentBtn">➕ إضافة طالب</button>
+        </div>
+        <p id="studentMsg" class="muted"></p>
+        <table id="studentsTable">
+          <thead><tr><th>#</th><th>الاسم</th><th>هاتف</th><th>ولي الأمر</th><th>الصف</th><th>الكود</th><th>تعديل</th><th>حذف</th></tr></thead>
+          <tbody><tr><td colspan="8" class="muted">جارٍ التحميل...</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- Books -->
+      <div id="books" class="panel card">
+        <h3>📚 إدارة الكتب</h3>
+        <div class="form-row">
+          <input id="book_title" placeholder="اسم الكتاب">
+          <input id="book_desc" placeholder="وصف قصير">
+        </div>
+        <div class="form-row">
+          <input id="book_cover" type="file" accept="image/*">
+          <input id="book_pdf" type="file" accept="application/pdf">
+          <button id="uploadBookBtn">📤 رفع الكتاب</button>
+        </div>
+        <p id="bookMsg" class="muted"></p>
+        <table id="booksTable">
+          <thead><tr><th>غلاف</th><th>العنوان</th><th>الوصف</th><th>تحميل</th><th>حذف</th></tr></thead>
+          <tbody><tr><td colspan="5" class="muted">جارٍ التحميل...</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- Videos -->
+      <div id="videos" class="panel card">
+        <h3>🎥 إدارة الفيديوهات</h3>
+        <div class="form-row">
+          <input id="video_title" placeholder="عنوان الفيديو">
+          <input id="video_url" placeholder="رابط يوتيوب كامل">
+          <select id="grade">
+            <option value="">اختر الصف الثانوي</option>
+            <option value="الأول الثانوي">الأول الثانوي</option>
+            <option value="الثاني الثانوي">الثاني الثانوي</option>
+            <option value="الثالث الثانوي">الثالث الثانوي</option>
+          </select>
+          <button id="addVideoBtn">➕ إضافة فيديو</button>
+        </div>
+        <p id="videoMsg" class="muted"></p>
+        <table id="videosTable">
+          <thead><tr><th>المعاينة</th><th>العنوان</th><th>رابط</th><th>الصف</th><th>حذف</th></tr></thead>
+          <tbody><tr><td colspan="5" class="muted">جارٍ التحميل...</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- Developer -->
+      <div id="developer" class="panel card">
+        <h3>🛠️ أدوات المطور</h3>
+        <div class="form-row">
+          <button id="openStudentDetailsFromDev">عرض صفحة تفاصيل الطالب</button>
+        </div>
+        <p class="muted">أدوات سريعة للمطور: افتح صفحة تفاصيل طالب في تاب جديد.</p>
+      </div>
+    </div>
+  </div>
+    <!-- Diagnostic helper: shows console info about loaded scripts and functions -->
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          console.group('dashboard-diagnostics');
+          console.log('DOM loaded');
+          const status = {
+            showMsg: typeof showMsg,
+            loadAdmins: typeof loadAdmins,
+            loadStudents: typeof loadStudents,
+            loadBooks: typeof loadBooks,
+            loadVideos: typeof loadVideos,
+            logout: typeof logout
+          };
+          console.log('function types:', status);
+
+          try {
+            const r = await fetch('/js/main.js');
+            console.log('/js/main.js fetch status:', r.status);
+          } catch (err) {
+            console.warn('fetch /js/main.js failed:', err.message || err);
+          }
+
+          // attach a quick click detector to the first sidebar button
+          const testBtn = document.querySelector('.sidebar button[data-tab]');
+          if (testBtn) {
+            testBtn.addEventListener('click', () => console.log('sidebar button clicked'));
+          }
+
+          // visual banner
+          const b = document.createElement('div');
+          b.id = 'diag-banner';
+          b.textContent = 'Diagnostics: open console for details';
+          Object.assign(b.style, {position:'fixed', left:'12px', bottom:'12px', padding:'8px 12px', background:'#222', color:'#fff', borderRadius:'6px', zIndex:9999, opacity:0.9});
+          document.body.appendChild(b);
+          console.groupEnd();
+        } catch (e) {
+          console.error('diagnostic error', e);
+        }
+      });
+    </script>
+</body>
+</html>

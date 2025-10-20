@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدارة الفيديوهات</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    iframe {
+      width: 200px;
+      height: 120px;
+      border-radius: 6px;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎥 إدارة الفيديوهات</h2>
+
+  <div class="form-container">
+    <label>رابط الفيديو على يوتيوب أو كود الفيديو (ID)</label>
+    <input type="text" id="url" placeholder="مثال: https://www.youtube.com/watch?v=xxxx أو الكود فقط">
+
+      <label>الوصف</label>
+      <textarea id="description" placeholder="اكتب وصف الفيديو هنا"></textarea>
+
+      <label>الصف الدراسي</label>
+      <select id="grade">
+        <option value="">اختر الصف الثانوي</option>
+        <option value="الأول الثانوي">الأول الثانوي</option>
+        <option value="الثاني الثانوي">الثاني الثانوي</option>
+        <option value="الثالث الثانوي">الثالث الثانوي</option>
+      </select>
+
+      <button onclick="addVideo()">➕ إضافة الفيديو</button>
+      <p id="msg" class="msg"></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الفيديو</th>
+        <th>الوصف</th>
+        <th>الصف</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody id="videoTable"></tbody>
+  </table>
+
+  <script>
+    async function loadVideos() {
+      const res = await fetch("/api/videos");
+      const videos = await res.json();
+      const table = document.getElementById("videoTable");
+      table.innerHTML = "";
+
+      videos.forEach((v) => {
+        const embedUrl = v.url.replace("watch?v=", "embed/");
+          const row = `
+            <tr>
+              <td><iframe src="${embedUrl}" allowfullscreen></iframe></td>
+              <td>${v.description}</td>
+              <td>${v.grade ? v.grade : ''}</td>
+              <td><button class="delete-btn" onclick="deleteVideo(${v.id})">🗑️ حذف</button></td>
+            </tr>
+          `;
+          table.innerHTML += row;
+      });
+    }
+
+    async function addVideo() {
+  let url = document.getElementById("url").value.trim();
+  url = url.replace(/\s+/g, ""); // إزالة كل المسافات
+      const description = document.getElementById("description").value.trim();
+      const msg = document.getElementById("msg");
+
+
+      if (!url || !description) {
+        msg.textContent = "⚠️ من فضلك املأ كل الحقول";
+        msg.style.color = "red";
+        return;
+      }
+      // تحقق مبدئي أن القيمة تخص يوتيوب (رابط أو id)
+      // يقبل أي رابط youtube.com أو youtu.be أو id فقط
+      const ytRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+|^[\w-]{11}$/;
+      if (!ytRegex.test(url)) {
+        msg.textContent = "⚠️ يجب إدخال رابط يوتيوب صحيح أو كود الفيديو فقط";
+        msg.style.color = "red";
+        return;
+      }
+
+      const res = await fetch("/api/videos/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, description })
+      });
+
+      const data = await res.json();
+      msg.textContent = data.message;
+      msg.style.color = data.success ? "green" : "red";
+      loadVideos();
+    }
+
+    async function deleteVideo(id) {
+      if (!confirm("هل أنت متأكد من حذف هذا الفيديو؟")) return;
+      await fetch(`/api/videos/${id}`, { method: "DELETE" });
+      loadVideos();
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>

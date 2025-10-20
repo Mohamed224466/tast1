@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>بيانات الطلاب</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+    }
+
+    .code {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .back {
+      display: block;
+      width: 200px;
+      margin: 25px auto;
+      text-align: center;
+      background: #007bff;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>قائمة الطلاب</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>رقم الهاتف</th>
+        <th>رقم ولي الأمر</th>
+        <th>الصف</th>
+        <th>الكود</th>
+      </tr>
+    </thead>
+    <tbody id="studentsTable">
+      <tr><td colspan="5">جارٍ تحميل البيانات...</td></tr>
+    </tbody>
+  </table>
+
+  <a id="backLink" href="#" class="back">الرجوع للوحة التحكم</a>
+
+  <script>
+    async function loadStudents() {
+      const tableBody = document.getElementById("studentsTable");
+
+      try {
+        const res = await fetch("/api/students/list");
+        const data = await res.json();
+
+        if (data.success) {
+          tableBody.innerHTML = "";
+          data.students.forEach(st => {
+            const row = `
+              <tr>
+                <td>${st.name}</td>
+                <td>${st.phone}</td>
+                <td>${st.parent_phone}</td>
+                <td>${st.grade}</td>
+                <td class="code">${st.code}</td>
+              </tr>
+            `;
+            tableBody.innerHTML += row;
+          });
+        } else {
+          tableBody.innerHTML = `<tr><td colspan="5">❌ لا توجد بيانات طلاب.</td></tr>`;
+        }
+      } catch (err) {
+        console.error(err);
+        tableBody.innerHTML = `<tr><td colspan="5">⚠️ خطأ في تحميل البيانات.</td></tr>`;
+      }
+    }
+
+    loadStudents();
+    // adjust back link based on role
+    try {
+      const role = localStorage.getItem('role');
+      const back = document.getElementById('backLink');
+      if (role === 'admin') back.href = 'admin-panel.html';
+      else back.href = 'dashboard.html';
+    } catch (e) { /* ignore */ }
+  </script>
+</body>
+</html>
